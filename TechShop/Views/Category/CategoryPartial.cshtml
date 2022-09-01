@@ -1,0 +1,16 @@
+﻿@using TechShop.Models
+@model List<Category>
+
+
+<ul>
+    @{ foreach (var item in Model)
+        {
+
+            @*<li><a href="#"> @item.Category_Name</a></li>*@
+            <li>
+                @Html.ActionLink(item.Category_Name, "Index", "Home", new { page = 1, category = item.Category_Id }, null)
+            </li>
+
+        }
+    }
+</ul>

@@ -1,0 +1,89 @@
+﻿@model IPagedList<TechShop.Models.Account_Cus>
+@using PagedList;
+@using TechShop.Models;
+
+@{
+    ViewBag.Title = "Details";
+    Layout = "~/Views/Shared/_LayoutAdminHome.cshtml";
+}
+
+
+
+<body>
+   
+    @{
+        int count = 1;
+        List<int> contriList = ViewBag.contriId;
+        List<int> accFacList = ViewBag.accFacId;
+    }
+    <!-- partial -->
+    <div class="main-panel">
+        <div class="content-wrapper">
+            <div class="row">
+                <div class="col-lg-12 grid-margin stretch-card">
+                    <div class="card">
+                        <div class="card-body">
+                            <h4 class="card-title">Orders</h4>
+
+                            <div class="table-responsive">
+                                <table class="table">
+                                    <thead>
+                                        <tr>
+                                            <td> List</td>
+                                            <th>Username</th>
+                                            <th>Full Name</th>
+                                            <th>Email</th>
+                                            <th>Telephone</th>
+                                            <th>Role</th>
+                                            <th style="text-align:center" scope="col">Action(table)</th>
+
+                                        </tr>
+                                    </thead>
+                                    <tbody>
+                                        @foreach (var item in Model)
+                                        {
+                                           
+                                            <tr>
+                                                <td>@count</td>
+                                                <td>@item.Username</td>
+                                                <td>@item.Name</td>
+                                                <td>@item.Email</td>
+                                                <td>@item.Tel</td>
+                                                @{
+                                                    List<Role> roles = ViewBag.role;
+                                                }
+                                                @foreach (var item1 in roles)
+                                                {
+                                                    if (item1.Id == item.RoleId)
+                                                    {
+                                                        <th style="text-align:center">@item1.Name</th>
+                                                    }
+                                                }
+                                                <th style="text-align:center">
+                                                    <a href="@Url.Action("AccountEdit","Admin",new { accountId = item.Cus_Id})">Edit</a> |
+                                                    <a href="@Url.Action("AccountDelete", "Admin", new { accId = item.Cus_Id})" onclick="return confirm('Are you sure you want to delete *@item.Username* Account?')">Delete</a>
+                                                </th>
+                                                @*<td><label class="badge badge-danger">Pending</label></td>*@
+                                            </tr>
+                                            count++;
+                                        }
+
+
+                                    </tbody>
+
+                                </table>
+                                <center>
+                                    <a href="@Url.Action("AccountCreate","Admin")" class="btn btn-info btn-fill" style="margin:10px; box-shadow:0 1px 2px rgb(0 0 0 / 5%), 0 0 0 1px rgb(63 63 68 / 10%)">Create</a>
+                                </center>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                </div>
+            </div>
+        </div>
+    
+
+                <!-- content-wrapper ends -->
+</body>
+

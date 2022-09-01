@@ -1,0 +1,85 @@
+﻿@*@model List<TechShop.Models.Order>*@
+@using TechShop.Models
+@using TechShop.Models;
+@using PagedList;
+@using PagedList.Mvc;
+@model TechShop.Models.HomeModels
+
+@{
+    ViewBag.Title = "CusOrders";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+
+<!-- Search Bar-->
+@using (Html.BeginForm("History", "Home", FormMethod.Get))
+{
+    <div class="row">
+        <h2>Order History</h2>
+        <div class="col-lg-12">
+            <div class="col-md-4">
+                <input type="text" value="@ViewBag.searchString" name="searchString" />
+            </div>
+            <div class="col-md-4">
+                <button type="submit"> Search </button>
+            </div>
+
+        </div>
+    </div>
+}
+
+<div>
+
+    <hr />
+    <table class="table table-hover">
+        <thead>
+            <tr>
+                <th style="text-align:center">Order Id</th>
+                <th style="text-align:center">Payment Type</th>
+                <th style="text-align:center">Phone</th>
+                <th style="text-align:center">Address</th>
+                <th style="text-align:center">Name</th>
+                <th style="text-align:center">Email</th>
+                <th style="text-align:center">Voucher</th>
+                <th style="text-align:center">Username</th>
+                <th style="text-align:center">Status</th>
+                <th style="text-align:center"></th>
+            </tr>
+        </thead>
+        <tbody>
+            @foreach (var item in Model.historyList)
+            {
+            <tr>
+
+                <td style="text-align:center">@item.Order_Id</td>
+                <td style="text-align:center">@item.Payment_Type</td>
+                <td style="text-align:center">@item.Phone</td>
+                <td style="text-align:center">@item.Address</td>
+                <td style="text-align:center">@item.Name</td>
+                <td style="text-align:center">@item.Email</td>
+                <td style="text-align:center">@item.Voucher</td>
+                <td style="text-align:center">@item.Username</td>
+                <td style="text-align:center">
+                    @{
+                        List<Status> statuses = ViewBag.status;
+                    }
+                    @foreach (var item1 in statuses)
+                    {
+                        if (item1.Status_Id == item.Status_Id)
+                        {
+                            <p>@item1.Status_Name</p>
+                        }
+                    }
+                </td>
+                <td style="text-align:center"><a href="@Url.Action("HistoryDetail","Home",new { @id = item.Order_Id})">Detail</a></td>
+
+            </tr>
+            }
+        </tbody>
+    </table>
+
+
+    @Html.PagedListPager(Model.historyList, page => Url.Action("History", new { page, @searchString = ViewBag.searchString }))
+
+</div>
+
+

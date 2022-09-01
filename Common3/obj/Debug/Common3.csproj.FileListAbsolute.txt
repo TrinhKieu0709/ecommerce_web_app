@@ -1,0 +1,6 @@
+C:\Users\Macus\Documents\TechShop\Common3\obj\Debug\Common3.csprojAssemblyReference.cache
+C:\Users\Macus\Documents\TechShop\Common3\obj\Debug\Common3.csproj.CoreCompileInputs.cache
+C:\Users\Macus\Documents\TechShop\Common3\bin\Debug\Common3.dll
+C:\Users\Macus\Documents\TechShop\Common3\bin\Debug\Common3.pdb
+C:\Users\Macus\Documents\TechShop\Common3\obj\Debug\Common3.dll
+C:\Users\Macus\Documents\TechShop\Common3\obj\Debug\Common3.pdb

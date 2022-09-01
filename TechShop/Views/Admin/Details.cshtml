@@ -1,0 +1,125 @@
+﻿@using TechShop.Models
+@using TechShop.Models.Home;
+@model TechShop.Models.Order
+
+@{
+    ViewBag.Title = "Details";
+    Layout = "~/Views/Shared/_LayoutAdminHome.cshtml";
+}
+
+<h2>
+    Details
+
+</h2>
+
+<div>
+    <h4>Order:  @Html.DisplayFor(model => model.Order_Id)</h4>
+    <hr />
+    <dl class="dl-horizontal">
+        <dt>
+            Payment Type :
+        </dt>
+
+        <dd>
+            @Html.DisplayFor(model => model.Payment_Type)
+        </dd>
+
+        <dt>
+            @Html.DisplayNameFor(model => model.Phone) :
+        </dt>
+
+        <dd>
+            @Html.DisplayFor(model => model.Phone)
+        </dd>
+
+        <dt>
+            @Html.DisplayNameFor(model => model.Address) :
+        </dt>
+
+        <dd>
+            @Html.DisplayFor(model => model.Address)
+        </dd>
+
+        <dt>
+            @Html.DisplayNameFor(model => model.Name) :
+        </dt>
+
+        <dd>
+            @Html.DisplayFor(model => model.Name)
+        </dd>
+
+        <dt>
+            @Html.DisplayNameFor(model => model.Email) :
+        </dt>
+
+        <dd>
+            @Html.DisplayFor(model => model.Email)
+        </dd>
+
+
+
+
+    </dl>
+</div>
+<table class=" table">
+    <tr>
+        <th> Product Name</th>
+        <th> Quantity</th>
+        <th> Price</th>
+    </tr>
+    @{
+        List<int> totalPrice = new List<int>();
+    }
+    @foreach (var item in Model.OrderDetails)
+    {
+        <tr>
+            <td>@item.Product.Product_Name</td>
+            <td>@item.Quantity</td>
+            <td>$@(String.Format("{0:N0}",item.Price))</td>
+
+        </tr>
+        totalPrice.Add(Convert.ToInt32(item.Quantity) * Convert.ToInt32(item.Price));
+    }
+    <tr>
+        <td></td>
+        <td></td>
+        <td> <strong>Total: </strong> @totalPrice.Sum()</td>
+
+    </tr>
+    @{
+        Coupon coupon = ViewBag.coupon;
+        var discountPrice = (totalPrice.Sum() + coupon.discount) / 100;
+        var finalPrice = totalPrice.Sum() - discountPrice;
+    }
+    <tr>
+        <td></td>
+        <td></td>
+        <td><strong>Discount: </strong> @coupon.discount %</td>
+    </tr>
+    <tr>
+        <td></td>
+        <td></td>
+        <td><strong>Final Price: </strong> @finalPrice</td>
+    </tr>
+</table>
+
+
+
+@using (Html.BeginForm("SaveStatus", "Admin", FormMethod.Post))
+{
+    <div class="form-group">
+        @Html.LabelFor(model => model.Statuses, htmlAttributes: new { @class = "control-label col-md-2" })
+        @{
+            List<SelectListItem> data = ViewBag.GetStatus;
+        }
+        @Html.HiddenFor(m => m.Order_Id);
+        <div class="col-md-10">
+            @Html.DropDownListFor(model => model.Status_Id, data, "--Select--", new { @class = "control-label col-md-2" })
+            @Html.ValidationMessageFor(model => model.Status_Id, "", new { @class = "text-danger" })
+        </div>
+    </div>
+    <button type="submit"  class="btn btn-primary mr-2">Save</button>
+    <button class="btn btn-light">Cancel</button>
+}
+
+

@@ -1,0 +1,138 @@
+﻿@model TechShop.Models.Order
+@using TechShop.Models
+
+@{
+    ViewBag.Title = "CusOrderDetails";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+
+<h2>CusOrderDetails</h2>
+
+<div>
+    <h4>Order</h4>
+    <hr />
+    <dl class="dl-horizontal">
+        <dt>
+            @Html.DisplayNameFor(model => model.Payment_Type)
+        </dt>
+
+        <dd>
+            @Html.DisplayFor(model => model.Payment_Type)
+        </dd>
+
+        <dt>
+            @Html.DisplayNameFor(model => model.Phone)
+        </dt>
+
+        <dd>
+            @Html.DisplayFor(model => model.Phone)
+        </dd>
+
+        <dt>
+            @Html.DisplayNameFor(model => model.Address)
+        </dt>
+
+        <dd>
+            @Html.DisplayFor(model => model.Address)
+        </dd>
+
+        <dt>
+            @Html.DisplayNameFor(model => model.Name)
+        </dt>
+
+        <dd>
+            @Html.DisplayFor(model => model.Name)
+        </dd>
+
+        <dt>
+            @Html.DisplayNameFor(model => model.Email)
+        </dt>
+
+        <dd>
+            @Html.DisplayFor(model => model.Email)
+        </dd>
+
+        
+
+        <dt>
+            @Html.DisplayNameFor(model => model.Voucher)
+        </dt>
+
+        <dd>
+            @Html.DisplayFor(model => model.Voucher)
+        </dd>
+
+        <dt>
+            @Html.DisplayNameFor(model => model.Username)
+        </dt>
+
+        <dd>
+            @Html.DisplayFor(model => model.Username)
+        </dd>
+
+        <dt>
+            Status:
+        </dt>
+
+        <dd>
+            @ViewBag.status
+        </dd>
+
+    </dl>
+</div>
+<div>
+    <table class=" table">
+        <tr>
+            <th> Product Name</th>
+            <th> Quantity</th>
+            <th> Price</th>
+        </tr>
+        @{
+            List<int> totalPrice = new List<int>();
+        }
+        @foreach (var item in Model.OrderDetails)
+        {
+            <tr>
+                <td>@item.Product.Product_Name</td>
+                <td>@item.Quantity</td>
+                <td>$@(String.Format("{0:N0}", item.Price))</td>
+
+            </tr>
+            totalPrice.Add(Convert.ToInt32(item.Quantity) * Convert.ToInt32(item.Price));
+        }
+        <tr>
+            <td></td>
+            <td></td>
+            <td> <strong>Total: </strong> @totalPrice.Sum()</td>
+
+        </tr>
+        @{
+            Coupon coupon = ViewBag.coupon;
+        }
+        @if (coupon != null)
+        {
+
+            <tr>
+                @{
+                    var discountPrice = (totalPrice.Sum() + coupon.discount) / 100;
+                    var finalPrice = totalPrice.Sum() - discountPrice;
+                }
+                <td></td>
+                <td></td>
+                <td><strong>Discount: </strong> @coupon.discount %</td>
+            </tr>
+            <tr>
+                <td></td>
+                <td></td>
+                <td><strong>Final Price: </strong> @finalPrice</td>
+            </tr>
+        }
+
+    </table>
+    <div class="form-group">
+        <div class="col-md-offset-2 col-md-10">
+            <input type="submit" value="Cancel" class="btn btn-default" />
+        </div>
+    </div>
+</div>
+

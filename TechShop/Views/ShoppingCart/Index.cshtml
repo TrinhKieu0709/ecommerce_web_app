@@ -1,0 +1,234 @@
+﻿@using TechShop.Models;
+@using TechShop.Models.Home;
+@{
+    ViewBag.Title = "Index";
+    Layout = "~/Views/Shared/_LayoutPage.cshtml";
+}
+<script src="~/Scripts/jquery-3.4.1.min.js"></script>
+
+<body>
+    <!-- Breadcrumb Section Begin -->
+    <section class="breadcrumb-section set-bg" data-setbg="/Content/Font-end/img/breadcrumb.jpg">
+        <div class="container">
+            <div class="row">
+                <div class="col-lg-12 text-center">
+                    <div class="breadcrumb__text">
+                        <h2>Shopping Cart</h2>
+                        <div class="breadcrumb__option">
+                            <a href="/Views/Home/Index.cshtml">Home</a>
+                            @*<a href="./index.html">Vegetables</a>*@
+
+                            <span>Shopping Cart</span>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+    <!-- Breadcrumb Section End -->
+    <section class="shoping-cart spad">
+        <div class="container">
+            <div class="row">
+                <div class="col-lg-12">
+                    <div class="shoping__cart__table">
+                        <table>
+                            <thead>
+                                <tr>
+                                    <th class="shoping__product">Products</th>
+                                    <th>Price</th>
+                                    <th>Quantity</th>
+                                    <th>Total</th>
+                                    <th></th>
+                                </tr>
+                            </thead>
+                            @{
+                                if (Session["Cart"] != null)
+                                {
+                                    using (Html.BeginForm("UpdateCart", "ShoppingCart", FormMethod.Post))
+                                    {
+                                        foreach (var cart in (List<itemCart>)Session["Cart"])
+                                        {
+                                            <tbody>
+                                                <tr>
+
+                                                    <td class="shoping__cart__item">
+                                                        <img src="~/FileImage/ProductImage/@cart.Product.Image" alt="">
+                                                        @Html.ActionLink(cart.Product.Product_Name, "Details", "Home", new { id = cart.Product.Product_Name }, null)
+                                                    </td>
+                                                    <td class="shoping__cart__price">
+                                                        @cart.Product.Price
+                                                    </td>
+                                                    <td class="shoping__cart__quantity">
+                                                        <div class="quantity">
+                                                            <div class="pro-qty">
+                                                                <input type="text" name="quantity" id="quantity" value=" @cart.Quantity" />
+                                                                &nbsp; <span id="errmsg"></span>
+                                                            </div>
+                                                        </div>
+                                                    </td>
+                                                    <td>
+                                                        @(String.Format("{0:N0}", cart.Product.Price * cart.Quantity))
+                                                    </td>
+                                                    <td>
+                                                        @Html.ActionLink("Delete", "ShoppingCart", new { id = cart.Product.Product_Id })
+                                                    </td>
+                                                </tr>
+
+                                                <br />
+                                                @*@Html.ActionLink("Continute Shopping ", "Index", "Home")
+                            @Html.ActionLink("Check Out ", "CheckOut", "ShoppingCart", null)*@
+                                                <br />
+                                                @*<input type="submit" value="UpdateCart" />*@
+
+
+                                            </tbody>
+                                        }
+                                        <div class="col-lg-12">
+
+                                            <a href="@Url.Action("Index", "Home")" class="primary-btn cart-btn">CONTINUE SHOPPING</a>
+                                            @*<input class="primary-btn cart-btn cart-btn-right value="UpdateCart" />*@
+                                            <input type="submit" value="Update Cart" class="primary-btn cart-btn" />
+
+                                        </div>
+                                    }
+                                }
+                            }
+
+                        </table>
+                    </div>
+                </div>
+            </div>
+            <div class="row">
+                <div class="col-lg-6">
+                    <div class="shoping__discount">
+                        <tr>
+                            <h5>Discount Codes</h5>
+                            <td>
+                                @using (Html.BeginForm("ApplyDiscount", "ShoppingCart", FormMethod.Post))
+                                {
+                                    <input type="text" name="code" placeholder="enter your code..." />
+                                    <button type="submit" class="site-btn">APPLY COUPON</button>
+                                }
+                                <label class="text-success">@ViewBag.status</label>
+                            </td>
+                        </tr>
+                    </div>
+
+                </div>
+
+                <div class="col-lg-6">
+                    <div class="shoping__checkout">
+                        <h5>Cart Total</h5>
+                        <ul>
+                            <li>
+                                Subtotal <span>
+                                    @{
+                                        List<itemCart> temp = (List<itemCart>)Session["Cart"];
+                                        var total = String.Format("{0:N0}", temp.Sum(m => m.Quantity * m.Product.Price));
+                                    }
+                                    @total $k
+                                </span>
+                            </li>
+                                @*<li> SubTotal <span>@(String.Format("{0:N0}", Cart.Product.Price * cart.Quantity)) </span></li>*@
+                                <li> Discount  <span>@ViewBag.discount </span></li>
+                                <li>Total  <span>@ViewBag.finalPrice  $</span></li>
+                        </ul>
+                        <a href="@Url.Action("CheckOut", "ShoppingCart", null)" class="primary-btn">PROCEED TO CHECKOUT</a>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+    <!-- Related Product Section Begin -->
+    <section class="related-product">
+        <div class="container">
+            <div class="row">
+                <div class="col-lg-12">
+                    <div class="section-title related__product__title">
+                        <h2>Related Product</h2>
+                    </div>
+                </div>
+            </div>
+            <div class="row">
+                <div class="col-lg-3 col-md-4 col-sm-6">
+                    <div class="product__item">
+                        <div class="product__item__pic set-bg" data-setbg="/Content/Font-End/img/product/product-1.jpg">
+                            <ul class="product__item__pic__hover">
+                                <li><a href="#"><i class="fa fa-heart"></i></a></li>
+                                <li><a href="#"><i class="fa fa-retweet"></i></a></li>
+                                <li><a href="#"><i class="fa fa-shopping-cart"></i></a></li>
+                            </ul>
+                        </div>
+                        <div class="product__item__text">
+                            <h6><a href="#">Crab Pool Security</a></h6>
+                            <h5>$30.00</h5>
+                        </div>
+                    </div>
+                </div>
+                <div class="col-lg-3 col-md-4 col-sm-6">
+                    <div class="product__item">
+                        <div class="product__item__pic set-bg" data-setbg="/Content/Font-End/img/product/product-6.jpg">
+                            <ul class="product__item__pic__hover">
+                                <li><a href="#"><i class="fa fa-heart"></i></a></li>
+                                <li><a href="#"><i class="fa fa-retweet"></i></a></li>
+                                <li><a href="#"><i class="fa fa-shopping-cart"></i></a></li>
+                            </ul>
+                        </div>
+                        <div class="product__item__text">
+                            <h6><a href="#">Crab Pool Security</a></h6>
+                            <h5>$30.00</h5>
+                        </div>
+                    </div>
+                </div>
+                <div class="col-lg-3 col-md-4 col-sm-6">
+                    <div class="product__item">
+                        <div class="product__item__pic set-bg" data-setbg="/Content/Font-End/img/product/product-3.jpg">
+                            <ul class="product__item__pic__hover">
+                                <li><a href="#"><i class="fa fa-heart"></i></a></li>
+                                <li><a href="#"><i class="fa fa-retweet"></i></a></li>
+                                <li><a href="#"><i class="fa fa-shopping-cart"></i></a></li>
+                            </ul>
+                        </div>
+                        <div class="product__item__text">
+                            <h6><a href="#">Crab Pool Security</a></h6>
+                            <h5>$30.00</h5>
+                        </div>
+                    </div>
+                </div>
+                <div class="col-lg-3 col-md-4 col-sm-6">
+                    <div class="product__item">
+                        <div class="product__item__pic set-bg" data-setbg="/Content/Font-End/img/product/product-7.jpg">
+                            <ul class="product__item__pic__hover">
+                                <li><a href="#"><i class="fa fa-heart"></i></a></li>
+                                <li><a href="#"><i class="fa fa-retweet"></i></a></li>
+                                <li><a href="#"><i class="fa fa-shopping-cart"></i></a></li>
+                            </ul>
+                        </div>
+                        <div class="product__item__text">
+                            <h6><a href="#">Crab Pool Security</a></h6>
+                            <h5>$30.00</h5>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+    <!-- Related Product Section End -->
+ 
+  
+</body>
+
+<script type="text/javascript">
+    $(document).ready(function () {
+        //called by pressed in textbox
+        $("#quantity").keyp ress(function (e) {
+            // if the letter  is not digit, we will display error mess & don't allow to type anything
+            if (e.which != 8 && e.which != 0 && (e.which < 48 || e.which > 57)) {
+                // we will display error message
+                $("#errmsg").html("Enter Digit Only! ").show().fadeOut("slow");
+                return false;
+            }
+
+        });
+    });
+</script>

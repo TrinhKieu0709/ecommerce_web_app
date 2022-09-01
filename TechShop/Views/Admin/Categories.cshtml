@@ -1,0 +1,80 @@
+﻿@model List<TechShop.Models.Category>
+@{
+    ViewBag.Title = "Categories";
+    Layout = "~/Views/Shared/_LayoutAdminHome.cshtml";
+}
+
+<body>
+    <!-- partial -->
+    <div class="main-panel">
+        <div class="content-wrapper">
+            <div class="row">
+                <div class="col-lg-12 grid-margin stretch-card">
+                    <div class="card">
+                        <div class="card-body">
+                            <h4 class="card-title">Categories</h4>
+
+                            <div class="table-responsive">
+
+                                <table class="table">
+                                    <thead>
+
+                                        <tr>
+
+                                            <th> Product ID</th>
+                                            <th>Product Name</th>
+                                            <th>Price</th>
+
+
+
+                                        </tr>
+                                    </thead>
+                                    <tbody>
+
+                                        @foreach (var item in Model)
+                                        {
+                                            <tr>
+
+                                                <td> @item.Category_Id</td>
+                                                <td> @item.Category_Name </td>
+
+                                                <td>
+                                                    <a href="@Url.Action("UpdateCategory",new { catID = item.Category_Id })">  Edit   </a>
+                                                    <a href="@Url.Action("DeleteCategory",new {catId = item.Category_Id })" onclick="return confirm('Are you sure you want to remove *@item.Category_Name*? @ViewBag.Err')"> Delete </a>
+</tr>
+
+                                        }
+
+
+
+
+
+                                    </tbody>
+                                </table>
+                                @{
+
+                                    TechShop.DAL.MyAppContext db = new TechShop.DAL.MyAppContext();
+                                    List<int?> accList = new List<int?>();
+                                    var sp = db.Products.ToList();
+                                    foreach (var p in sp)
+                                    {
+                                        accList.Add(p.Category_Id);
+                                    }
+
+
+                                }
+                                <center><a href="href="@Url.Action("AddCategory","Admin")" class="btn btn-info btn-fill" style="margin:10px; box-shadow:0 1px 2px rgb(0 0 0 / 5%), 0 0 0 1px rgb(63 63 68 / 10%)"> Create</a></center>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- content-wrapper ends -->
+                <!-- partial -->
+            </div>
+            <!-- main-panel ends -->
+        </div>
+        <!-- page-body-wrapper ends -->
+    </div>
+</body>
+
